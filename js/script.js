@@ -1,4 +1,6 @@
 //Stage 1:  Cover page with button that starts the program
+
+
 // Once the program starts, the timer starts 
 //Stage 2:  Questions and answer program - goes through each of the question and prompt the user to select answers
 // The timer stops either when the user has answered all the questions or when it goes into zero 
