@@ -11,7 +11,7 @@ var cardTitle = document.querySelector(".card-title");
 var cardText = document.querySelector(".card-text");
 
 var questionCount = 0;
-var count = 10;
+var count = 75;
 var score = 0;
 
 var questionBank = [
@@ -42,7 +42,7 @@ startGame.addEventListener("click", function () {
     var btn4 = document.createElement("button");
 
     //Setting attributes for dynamic HTML 
-    btnGroup.setAttribute("class", "btn-group-vertical");
+    btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
     btn1.setAttribute("type", "button");
     btn1.setAttribute("class", "btn btn-primary choice1");
     btn2.setAttribute("type", "button");
@@ -82,10 +82,11 @@ function startTimer() {
 }
 
 function startQuestions() {
-    var choice1 = document.querySelector(".choice1")
-    var choice2 = document.querySelector(".choice2")
-    var choice3 = document.querySelector(".choice3")
-    var choice4 = document.querySelector(".choice4")
+    var choice1 = document.querySelector(".choice1");
+    var choice2 = document.querySelector(".choice2");
+    var choice3 = document.querySelector(".choice3");
+    var choice4 = document.querySelector(".choice4");
+    console.log(questionCount);
 
 
     cardTitle.textContent = questionBank[questionCount].Question;
@@ -94,24 +95,31 @@ function startQuestions() {
     choice3.textContent = questionBank[questionCount].Answer[2];
     choice4.textContent = questionBank[questionCount].Answer[3];
 
-    choice1.addEventListener("click", function () {
+    choice1.addEventListener("click", function (e) {
+        e.preventDefault();
         if (questionBank[questionCount].AnswerKey[0]) {
             score++;
-            alert("Right Answer");
+            console.log(questionCount);
+            alert("Right Answer1");
+
         } else {
-            alert("Wrong Answer");
+            console.log(questionCount);
+            alert("Wrong Answer1");
+
         }
 
         if (questionCount == questionBank.length - 1) {
+            console.log(score);
             endGame();
         } else {
             questionCount = questionCount + 1;
-            startQuestions()
+            console.log("new q count 1", questionCount)
+            startQuestions();
         }
+    });
 
-    })
-
-    choice2.addEventListener("click", function () {
+    choice2.addEventListener("click", function (e) {
+        e.preventDefault();
         if (questionBank[questionCount].AnswerKey[1]) {
             score++;
             alert("Right Answer");
@@ -123,12 +131,12 @@ function startQuestions() {
             endGame();
         } else {
             questionCount = questionCount + 1;
-            startQuestions()
+            startQuestions();
         }
+    });
 
-    })
-
-    choice3.addEventListener("click", function () {
+    choice3.addEventListener("click", function (e) {
+        e.preventDefault();
         if (questionBank[questionCount].AnswerKey[2]) {
             score++;
             alert("Right Answer");
@@ -140,11 +148,12 @@ function startQuestions() {
             endGame();
         } else {
             questionCount = questionCount + 1;
-            startQuestions()
+            startQuestions();
         }
-    })
+    });
 
-    choice4.addEventListener("click", function () {
+    choice4.addEventListener("click", function (e) {
+        e.preventDefault();
         if (questionBank[questionCount].AnswerKey[3]) {
             score++;
             alert("Right Answer");
@@ -156,15 +165,59 @@ function startQuestions() {
             endGame();
         } else {
             questionCount = questionCount + 1;
-            startQuestions()
+            startQuestions();
         }
-    })
-    //}
+    });
 };
 
 function endGame() {
+    console.log("end game")
+    var btnGroup = document.querySelector(".btnGroup");
+    var comment = document.createElement("p");
+    var inputForm = document.createElement("form")
+    var inputFormRow = document.createElement("div");
+    var inputTextBox = document.createElement("input");
+    var button = document.createElement("button")
+
+    comment.setAttribute("class", "card-text");
+
+    inputFormRow.setAttribute("class", "col-7");
+
+    inputTextBox.setAttribute("type", "text");
+    inputTextBox.setAttribute("class", "form-control");
+    inputTextBox.setAttribute("placeholder", "Enter your initials");
+
+    button.setAttribute("type", "button");
+    button.setAttribute("class", "btn btn-primary submitBtn");
+    button.textContent = "Submit";
+
     score = score + count;
-    console.log(score);
+    console.log("192", score)
+    console.log(cardBody);
+    console.log(btnGroup);
+    // cardBody.removeChild(btnGroup);
+    cardBody.appendChild(comment);
+    comment.textContent = "Your score is " + score + ".  Please enter you initials below:";
+    cardBody.appendChild(inputForm);
+    inputForm.appendChild(inputFormRow);
+    inputFormRow.appendChild(inputTextBox);
+    inputFormRow.appendChild(button);
+
+    //console.log(cardBody);
+    //console.log(btnGroup);
+    enterHighScores()
+}
+
+function enterHighScores() {
+    var submitBtn = document.querySelector(".submitBtn");
+
+    submitBtn.addEventListener("click", function () {
+        showHighScores();
+    })
+}
+
+function showHighScores() {
+    alert("you've arrived")
 }
 //Script
 
