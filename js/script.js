@@ -273,6 +273,11 @@ function restartGame(e) {
     console.log("restartGame")
     console.log(cardBody);
 
+    questionCount = 0;
+    count = 75;
+    score = 0;
+    stopTimer = false;
+
     restart.addEventListener("click", startTasks);
 };
 
