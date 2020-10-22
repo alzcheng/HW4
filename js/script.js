@@ -13,6 +13,7 @@ var cardText = document.querySelector(".card-text");
 var questionCount = 0;
 var count = 75;
 var score = 0;
+var stopTimer = false;
 
 var questionBank = [
     {
@@ -34,13 +35,14 @@ var questionBank = [
 
 
 startGame.addEventListener("click", function () {
+    console.log("start question")
+    console.log(typeof cardBody);
     //Traverse the DOM to change format of page
     var btnGroup = document.createElement("div");
     var btn1 = document.createElement("button");
     var btn2 = document.createElement("button");
     var btn3 = document.createElement("button");
     var btn4 = document.createElement("button");
-
     //Setting attributes for dynamic HTML 
     btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
     btn1.setAttribute("type", "button");
@@ -61,10 +63,46 @@ startGame.addEventListener("click", function () {
     btnGroup.appendChild(btn3);
     btnGroup.appendChild(btn4);
 
+    console.log(cardBody)
     startTimer();
     startQuestions();
-})
+});
 
+
+// function startQuestions(e) {
+//     e.preventDefault();
+//     console.log("start question")
+//     console.log(typeof cardBody);
+//     //Traverse the DOM to change format of page
+//     var btnGroup = document.createElement("div");
+//     var btn1 = document.createElement("button");
+//     var btn2 = document.createElement("button");
+//     var btn3 = document.createElement("button");
+//     var btn4 = document.createElement("button");
+//     //Setting attributes for dynamic HTML 
+//     btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
+//     btn1.setAttribute("type", "button");
+//     btn1.setAttribute("class", "btn btn-primary choice1");
+//     btn2.setAttribute("type", "button");
+//     btn2.setAttribute("class", "btn btn-primary choice2");
+//     btn3.setAttribute("type", "button");
+//     btn3.setAttribute("class", "btn btn-primary choice3");
+//     btn4.setAttribute("type", "button");
+//     btn4.setAttribute("class", "btn btn-primary choice4");
+
+//     //Remote and append children
+//     cardBody.removeChild(cardText);
+//     cardBody.removeChild(startGame)
+//     cardBody.appendChild(btnGroup);
+//     btnGroup.appendChild(btn1);
+//     btnGroup.appendChild(btn2);
+//     btnGroup.appendChild(btn3);
+//     btnGroup.appendChild(btn4);
+
+//     console.log(cardBody)
+//     startTimer();
+//     startQuestions();
+// }
 
 //Countdown timer 
 function startTimer() {
@@ -78,12 +116,16 @@ function startTimer() {
             countdownTimer.textContent = "Timer: " + count;
             //Tallies up the scores
             endGame();
+        } else if (stopTimer) {
+            clearInterval(timer)
+            countdownTimer.textContent = "Timer: " + count;
+            return;
         }
     }, 1000)
 }
 
-function userAnswer(event) {
-    event.preventDefault();
+function userAnswer(e) {
+    e.preventDefault();
     console.log("start click");
     console.log(questionBank[questionCount].AnswerKey[0])
     if (questionBank[questionCount].AnswerKey[0]) {
@@ -114,6 +156,7 @@ function startQuestions() {
     var choice4 = document.querySelector(".choice4");
     var choice = document.querySelector(".btn");
     console.log(questionCount);
+    console.log(choice1);
 
 
     cardTitle.textContent = questionBank[questionCount].Question;
@@ -122,81 +165,7 @@ function startQuestions() {
     choice3.textContent = questionBank[questionCount].Answer[2];
     choice4.textContent = questionBank[questionCount].Answer[3];
 
-    choice.addEventListener("click", userAnswer);  //function (event) {
-    // event.preventDefault();
-    // event.stopPropagation();
-    // console.log("start click");
-    // console.log(questionBank[questionCount].AnswerKey[0])
-    // if (questionBank[questionCount].AnswerKey[0]) {
-    //     score++;
-    //     console.log("step1");
-    //     alert("Right Answer1");
-    // } else {
-    //     console.log("step2");
-    //     alert("Wrong Answer1");
-
-    // }
-
-    // if (questionCount == questionBank.length - 1) {
-    //     console.log("step3");
-    //     endGame();
-    // } else {
-    //     questionCount = questionCount + 1;
-    //     console.log("step4")
-    //     startQuestions();
-    // }
-    // });
-
-    // choice2.addEventListener("click", function (e) {
-    //     e.preventDefault();
-    //     if (questionBank[questionCount].AnswerKey[1]) {
-    //         score++;
-    //         alert("Right Answer");
-    //     } else {
-    //         alert("Wrong Answer");
-    //     }
-
-    //     if (questionCount == questionBank.length - 1) {
-    //         endGame();
-    //     } else {
-    //         questionCount = questionCount + 1;
-    //         startQuestions();
-    //     }
-    // });
-
-    // choice3.addEventListener("click", function (e) {
-    //     e.preventDefault();
-    //     if (questionBank[questionCount].AnswerKey[2]) {
-    //         score++;
-    //         alert("Right Answer");
-    //     } else {
-    //         alert("Wrong Answer");
-    //     }
-
-    //     if (questionCount == questionBank.length - 1) {
-    //         endGame();
-    //     } else {
-    //         questionCount = questionCount + 1;
-    //         startQuestions();
-    //     }
-    // });
-
-    // choice4.addEventListener("click", function (e) {
-    //     e.preventDefault();
-    //     if (questionBank[questionCount].AnswerKey[3]) {
-    //         score++;
-    //         alert("Right Answer");
-    //     } else {
-    //         alert("Wrong Answer");
-    //     }
-
-    //     if (questionCount == questionBank.length - 1) {
-    //         endGame();
-    //     } else {
-    //         questionCount = questionCount + 1;
-    //         startQuestions();
-    //     }
-    // });
+    choice.addEventListener("click", userAnswer);
 };
 
 function endGame() {
@@ -208,16 +177,19 @@ function endGame() {
     var inputTextBox = document.createElement("input");
     var button = document.createElement("button")
 
+    stopTimer = true;
+
     comment.setAttribute("class", "card-text");
 
-    inputFormRow.setAttribute("class", "col-7");
+    inputForm.setAttribute("class", "inputForm")
+    inputFormRow.setAttribute("class", "col-7 formRow");
 
     inputTextBox.setAttribute("type", "text");
-    inputTextBox.setAttribute("class", "form-control");
+    inputTextBox.setAttribute("class", "form-control initialInput");
     inputTextBox.setAttribute("placeholder", "Enter your initials");
 
     button.setAttribute("type", "button");
-    button.setAttribute("class", "btn btn-primary submitBtn");
+    button.setAttribute("class", "btn btn-primary submitBtn goBackBtn");
     button.textContent = "Submit";
 
     score = score + count;
@@ -231,24 +203,112 @@ function endGame() {
     inputForm.appendChild(inputFormRow);
     inputFormRow.appendChild(inputTextBox);
     inputFormRow.appendChild(button);
-    console.log("end endgame")
+    console.log(cardBody)
+
+    document.querySelector(".submitBtn").addEventListener("click", enterHighScores)
 
     //console.log(cardBody);
     //console.log(btnGroup);
-    // enterHighScores()
 }
 
-// function enterHighScores() {
-//     var submitBtn = document.querySelector(".submitBtn");
+function enterHighScores(e) {
+    e.preventDefault();
+    var lastUser = window.localStorage.getItem("user");
+    var lastScore = window.localStorage.getItem("score");
+    var currentUser = document.querySelector(".initialInput").value;
+    var currentScore = score;
 
-//     submitBtn.addEventListener("click", function () {
-//         showHighScores();
-//     })
-// }
+    // if (currentScore < lastScore) {
+    //     window.localStorage.setItem("user", lastUser);
+    //     window.localStorage.setItem("score", lastScore);
+    // } else {
+    window.localStorage.setItem("user", currentUser);
+    window.localStorage.setItem("score", currentScore);
+    // }
+    showHighScores()
+}
 
-// function showHighScores() {
-//     alert("you've arrived")
-// }
+function showHighScores() {
+    var initialInput = document.querySelector(".initialInput");
+    var formRow = document.querySelector(".formRow")
+    var displayBlock = document.createElement("span");
+    var clearBtn = document.createElement("button");
+    var goBackBtn = document.querySelector(".goBackBtn")
+
+    displayBlock.setAttribute("class", "d-block p-2 bg-primary text-white displayBlock");
+    displayBlock.textContent = window.localStorage.getItem("user") + "-" + window.localStorage.getItem("score");
+    clearBtn.setAttribute("type", "button");
+    clearBtn.setAttribute("class", "btn btn-primary clearBtn");
+
+    clearBtn.textContent = "Clear HighScore";
+    goBackBtn.textContent = "Go Back";
+
+    console.log(initialInput);
+    console.log(formRow);
+    formRow.removeChild(initialInput);
+    formRow.prepend(displayBlock);
+    formRow.appendChild(clearBtn);
+    console.log(cardBody);
+
+    clearBtn.addEventListener("click", clearScore);
+    goBackBtn.addEventListener("click", restartGame);
+}
+
+function clearScore(e) {
+    e.preventDefault();
+    var displayBlock = document.querySelector(".displayBlock");
+    var formRow = document.querySelector(".formRow");
+    console.log(displayBlock);
+    console.log(formRow);
+    formRow.removeChild(displayBlock);
+}
+
+function restartGame(e) {
+    e.preventDefault();
+    var inputForm = document.querySelector(".inputForm");
+    var restartGame = document.createElement("button");
+
+    restartGame.setAttribute("type", "button");
+    restartGame.setAttribute("class", "btn btn-primary restartGame")
+    cardBody.removeChild(inputForm);
+    cardBody.appendChild(restartGame);
+
+    restartGame.addEventListener("click", function () {
+        console.log("start question")
+        console.log(typeof cardBody);
+        //Traverse the DOM to change format of page
+        var btnGroup = document.createElement("div");
+        var btn1 = document.createElement("button");
+        var btn2 = document.createElement("button");
+        var btn3 = document.createElement("button");
+        var btn4 = document.createElement("button");
+        //Setting attributes for dynamic HTML 
+        btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
+        btn1.setAttribute("type", "button");
+        btn1.setAttribute("class", "btn btn-primary choice1");
+        btn2.setAttribute("type", "button");
+        btn2.setAttribute("class", "btn btn-primary choice2");
+        btn3.setAttribute("type", "button");
+        btn3.setAttribute("class", "btn btn-primary choice3");
+        btn4.setAttribute("type", "button");
+        btn4.setAttribute("class", "btn btn-primary choice4");
+
+        //Remote and append children
+        cardBody.removeChild(cardText);
+        cardBody.removeChild(startGame)
+        cardBody.appendChild(btnGroup);
+        btnGroup.appendChild(btn1);
+        btnGroup.appendChild(btn2);
+        btnGroup.appendChild(btn3);
+        btnGroup.appendChild(btn4);
+
+        console.log(cardBody)
+        startTimer();
+        startQuestions();
+    });
+}
+
+
 //Script
 
 //Stage 1:  Cover page with button that starts the program
