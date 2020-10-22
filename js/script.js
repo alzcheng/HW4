@@ -70,8 +70,8 @@ function startTasks(e) {
 
     console.log(cardBody);
     console.log(cardText);
-    cardBody.removeChild(cardText);
-    cardBody.removeChild(startGame)
+    cardBody.removeChild(document.querySelector(".card-text"));
+    cardBody.removeChild(document.querySelector(".startGame"))
     cardBody.appendChild(btnGroup);
     btnGroup.appendChild(btn1);
     btnGroup.appendChild(btn2);
@@ -89,21 +89,21 @@ function startTasks(e) {
 //startTimer counts down the time from a pre-determiend count.  
 //It will initiate endGame if time runs out.  Otherwise, it will stop if stopTimer = true; 
 function startTimer() {
-    // console.log("startTimer")
-    // var timer = setInterval(function () {
-    //     count--
-    //     countdownTimer.textContent = "Timer: " + count;
-    //     if (count === 0) {
-    //         clearInterval(timer)
-    //         countdownTimer.textContent = "Timer: " + count;
-    //         //Tallies up the scores
-    //         endGame();
-    //     } else if (stopTimer) {
-    //         clearInterval(timer)
-    //         countdownTimer.textContent = "Timer: " + count;
-    //         return;
-    //     }
-    // }, 1000)
+    console.log("startTimer")
+    var timer = setInterval(function () {
+        count--
+        countdownTimer.textContent = "Timer: " + count;
+        if (count === 0) {
+            clearInterval(timer)
+            countdownTimer.textContent = "Timer: " + count;
+            //Tallies up the scores
+            endGame();
+        } else if (stopTimer) {
+            clearInterval(timer)
+            countdownTimer.textContent = "Timer: " + count;
+            return;
+        }
+    }, 1000)
 }
 
 //startQuestions fills in the questions and the choices for answers from startTasks
@@ -265,60 +265,16 @@ function restartGame(e) {
     var inputForm = document.querySelector(".inputForm");
     var restart = document.createElement("button");
     restart.setAttribute("type", "button");
-    restart.setAttribute("class", "btn btn-primary restart");
-    restart.textContent = "Restart"
+    restart.setAttribute("class", "btn btn-primary startGame");
+    restart.textContent = "Start"
 
     cardBody.removeChild(inputForm);
     cardBody.appendChild(restart);
     console.log("restartGame")
     console.log(cardBody);
 
-    restart.addEventListener("click", restartTasks);
-}
-
-function restartTasks(e) {
-    console.log("restartTasks")
-    console.log(cardBody);
-
-    var btnGroup = document.createElement("div");
-    var btn1 = document.createElement("button");
-    var btn2 = document.createElement("button");
-    var btn3 = document.createElement("button");
-    var btn4 = document.createElement("button");
-    var restart = document.querySelector(".restart");
-    //var cardBody = document.querySelector(".card-body");
-    // var cardTitle = document.querySelector(".card-title");
-    //var cardText = document.querySelector(".card-text");
-
-    //Setting attributes for dynamic HTML 
-    btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
-    btn1.setAttribute("type", "button");
-    btn1.setAttribute("class", "btn btn-primary choice1");
-    btn2.setAttribute("type", "button");
-    btn2.setAttribute("class", "btn btn-primary choice2");
-    btn3.setAttribute("type", "button");
-    btn3.setAttribute("class", "btn btn-primary choice3");
-    btn4.setAttribute("type", "button");
-    btn4.setAttribute("class", "btn btn-primary choice4");
-
-    //Remote and append children
-
-    console.log(cardBody);
-    console.log(cardText);
-    cardBody.removeChild(document.querySelector(".card-text"));
-    cardBody.removeChild(restart);
-    cardBody.appendChild(btnGroup);
-    btnGroup.appendChild(btn1);
-    btnGroup.appendChild(btn2);
-    btnGroup.appendChild(btn3);
-    btnGroup.appendChild(btn4);
-
-    console.log("startTasks");
-    console.log(cardBody);
-    startTimer();
-    startQuestions();
-
-}
+    restart.addEventListener("click", startTasks);
+};
 
 console.log("start game")
 startGame.addEventListener("click", startTasks);
