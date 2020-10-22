@@ -68,6 +68,7 @@ startGame.addEventListener("click", function () {
 
 //Countdown timer 
 function startTimer() {
+    console.log("timer")
 
     var timer = setInterval(function () {
         count--
@@ -81,11 +82,37 @@ function startTimer() {
     }, 1000)
 }
 
+function userAnswer(event) {
+    event.preventDefault();
+    console.log("start click");
+    console.log(questionBank[questionCount].AnswerKey[0])
+    if (questionBank[questionCount].AnswerKey[0]) {
+        score++;
+        console.log("step1");
+        alert("Right Answer1");
+    } else {
+        console.log("step2");
+        alert("Wrong Answer1");
+
+    }
+
+    if (questionCount == questionBank.length - 1) {
+        console.log("step3");
+        endGame();
+    } else {
+        questionCount = questionCount + 1;
+        console.log("step4")
+        startQuestions();
+    }
+}
+
 function startQuestions() {
+    console.log("start question")
     var choice1 = document.querySelector(".choice1");
     var choice2 = document.querySelector(".choice2");
     var choice3 = document.querySelector(".choice3");
     var choice4 = document.querySelector(".choice4");
+    var choice = document.querySelector(".btn");
     console.log(questionCount);
 
 
@@ -95,79 +122,81 @@ function startQuestions() {
     choice3.textContent = questionBank[questionCount].Answer[2];
     choice4.textContent = questionBank[questionCount].Answer[3];
 
-    choice1.addEventListener("click", function (e) {
-        e.preventDefault();
-        if (questionBank[questionCount].AnswerKey[0]) {
-            score++;
-            console.log(questionCount);
-            alert("Right Answer1");
+    choice.addEventListener("click", userAnswer);  //function (event) {
+    // event.preventDefault();
+    // event.stopPropagation();
+    // console.log("start click");
+    // console.log(questionBank[questionCount].AnswerKey[0])
+    // if (questionBank[questionCount].AnswerKey[0]) {
+    //     score++;
+    //     console.log("step1");
+    //     alert("Right Answer1");
+    // } else {
+    //     console.log("step2");
+    //     alert("Wrong Answer1");
 
-        } else {
-            console.log(questionCount);
-            alert("Wrong Answer1");
+    // }
 
-        }
+    // if (questionCount == questionBank.length - 1) {
+    //     console.log("step3");
+    //     endGame();
+    // } else {
+    //     questionCount = questionCount + 1;
+    //     console.log("step4")
+    //     startQuestions();
+    // }
+    // });
 
-        if (questionCount == questionBank.length - 1) {
-            console.log(score);
-            endGame();
-        } else {
-            questionCount = questionCount + 1;
-            console.log("new q count 1", questionCount)
-            startQuestions();
-        }
-    });
+    // choice2.addEventListener("click", function (e) {
+    //     e.preventDefault();
+    //     if (questionBank[questionCount].AnswerKey[1]) {
+    //         score++;
+    //         alert("Right Answer");
+    //     } else {
+    //         alert("Wrong Answer");
+    //     }
 
-    choice2.addEventListener("click", function (e) {
-        e.preventDefault();
-        if (questionBank[questionCount].AnswerKey[1]) {
-            score++;
-            alert("Right Answer");
-        } else {
-            alert("Wrong Answer");
-        }
+    //     if (questionCount == questionBank.length - 1) {
+    //         endGame();
+    //     } else {
+    //         questionCount = questionCount + 1;
+    //         startQuestions();
+    //     }
+    // });
 
-        if (questionCount == questionBank.length - 1) {
-            endGame();
-        } else {
-            questionCount = questionCount + 1;
-            startQuestions();
-        }
-    });
+    // choice3.addEventListener("click", function (e) {
+    //     e.preventDefault();
+    //     if (questionBank[questionCount].AnswerKey[2]) {
+    //         score++;
+    //         alert("Right Answer");
+    //     } else {
+    //         alert("Wrong Answer");
+    //     }
 
-    choice3.addEventListener("click", function (e) {
-        e.preventDefault();
-        if (questionBank[questionCount].AnswerKey[2]) {
-            score++;
-            alert("Right Answer");
-        } else {
-            alert("Wrong Answer");
-        }
+    //     if (questionCount == questionBank.length - 1) {
+    //         endGame();
+    //     } else {
+    //         questionCount = questionCount + 1;
+    //         startQuestions();
+    //     }
+    // });
 
-        if (questionCount == questionBank.length - 1) {
-            endGame();
-        } else {
-            questionCount = questionCount + 1;
-            startQuestions();
-        }
-    });
+    // choice4.addEventListener("click", function (e) {
+    //     e.preventDefault();
+    //     if (questionBank[questionCount].AnswerKey[3]) {
+    //         score++;
+    //         alert("Right Answer");
+    //     } else {
+    //         alert("Wrong Answer");
+    //     }
 
-    choice4.addEventListener("click", function (e) {
-        e.preventDefault();
-        if (questionBank[questionCount].AnswerKey[3]) {
-            score++;
-            alert("Right Answer");
-        } else {
-            alert("Wrong Answer");
-        }
-
-        if (questionCount == questionBank.length - 1) {
-            endGame();
-        } else {
-            questionCount = questionCount + 1;
-            startQuestions();
-        }
-    });
+    //     if (questionCount == questionBank.length - 1) {
+    //         endGame();
+    //     } else {
+    //         questionCount = questionCount + 1;
+    //         startQuestions();
+    //     }
+    // });
 };
 
 function endGame() {
@@ -195,30 +224,31 @@ function endGame() {
     console.log("192", score)
     console.log(cardBody);
     console.log(btnGroup);
-    // cardBody.removeChild(btnGroup);
+    cardBody.removeChild(btnGroup);
     cardBody.appendChild(comment);
     comment.textContent = "Your score is " + score + ".  Please enter you initials below:";
     cardBody.appendChild(inputForm);
     inputForm.appendChild(inputFormRow);
     inputFormRow.appendChild(inputTextBox);
     inputFormRow.appendChild(button);
+    console.log("end endgame")
 
     //console.log(cardBody);
     //console.log(btnGroup);
-    enterHighScores()
+    // enterHighScores()
 }
 
-function enterHighScores() {
-    var submitBtn = document.querySelector(".submitBtn");
+// function enterHighScores() {
+//     var submitBtn = document.querySelector(".submitBtn");
 
-    submitBtn.addEventListener("click", function () {
-        showHighScores();
-    })
-}
+//     submitBtn.addEventListener("click", function () {
+//         showHighScores();
+//     })
+// }
 
-function showHighScores() {
-    alert("you've arrived")
-}
+// function showHighScores() {
+//     alert("you've arrived")
+// }
 //Script
 
 //Stage 1:  Cover page with button that starts the program
