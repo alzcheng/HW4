@@ -4,6 +4,7 @@
 //Timer variables
 var countdownTimer = document.querySelector(".countdownTimer");
 var startGame = document.querySelector(".startGame");
+var viewHS = document.querySelector(".viewHS");
 
 //HTML variables
 var questionCount = 0;
@@ -13,18 +14,32 @@ var stopTimer = false;
 
 var questionBank = [
     {
-        Question: "Question1",
-        Answer: ["a", "b", "c", "d"],
-        AnswerKey: [false, true, false, false]
+        question: "Commonly used data types DO NOT include: ",
+        answer: ["1. Strings", "2. Boolean", "3. Alerts", "4. Numbers"],
+        correctAnswer: "3. Alerts"
     },
     {
-        Question: "Question2",
-        Answer: ["e", "f", "g", "h"],
-        AnswerKey: [false, true, false, false]
-    }
-];
+        question: "The condition in an if / else statement is enclosed within _____.",
+        answer: ["1. Quotes", "2. Curly brackets", "3. Paratheses", "4. Square brackets"],
+        correctAnswer: "3. Paratheses"
+    },
+    {
+        question: "Arrays in JavaScript can be used to store ____.",
+        answer: ["1. Numbers and strings", "2. Other arrays", "3. Booleans", "4. All of the above"],
+        correctAnswer: "4. All of the above"
+    },
+    {
+        question: "String values must be enclosed within ____ when being assigned to variables.",
+        answer: ["1. Comas", "2. Curly brackets", "3. Quotes", "4. Parantheses"],
+        correctAnswer: "4. Parantheses"
+    },
+    {
+        question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+        answer: ["1. Javascript", "2. Terminal/bash", "3. For loops", "4. Console log"],
+        correctAnswer: "4. Console log"
+    },
 
-//var timerStartSec= 75;
+];
 
 
 //Function definitions 
@@ -46,13 +61,13 @@ function startTasks(e) {
     //Setting attributes for dynamic HTML 
     btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
     btn1.setAttribute("type", "button");
-    btn1.setAttribute("class", "btn btn-primary choice1");
+    btn1.setAttribute("class", "btn btn-primary allBtn choice1");
     btn2.setAttribute("type", "button");
-    btn2.setAttribute("class", "btn btn-primary choice2");
+    btn2.setAttribute("class", "btn btn-primary allBtn choice2");
     btn3.setAttribute("type", "button");
-    btn3.setAttribute("class", "btn btn-primary choice3");
+    btn3.setAttribute("class", "btn btn-primary allBtn choice3");
     btn4.setAttribute("type", "button");
-    btn4.setAttribute("class", "btn btn-primary choice4");
+    btn4.setAttribute("class", "btn btn-primary allBtn choice4");
 
     //Remote and append children
 
@@ -98,24 +113,28 @@ function startQuestions() {
     var choice2 = document.querySelector(".choice2");
     var choice3 = document.querySelector(".choice3");
     var choice4 = document.querySelector(".choice4");
-    var choice = document.querySelector(".btn");
+    var choice = document.getElementsByClassName("allBtn");
     var cardTitle = document.querySelector(".card-title");
 
 
-    cardTitle.textContent = questionBank[questionCount].Question;
-    choice1.textContent = questionBank[questionCount].Answer[0];
-    choice2.textContent = questionBank[questionCount].Answer[1];
-    choice3.textContent = questionBank[questionCount].Answer[2];
-    choice4.textContent = questionBank[questionCount].Answer[3];
 
-    choice.addEventListener("click", userAnswer);
+    cardTitle.textContent = questionBank[questionCount].question;
+    choice1.textContent = questionBank[questionCount].answer[0];
+    choice2.textContent = questionBank[questionCount].answer[1];
+    choice3.textContent = questionBank[questionCount].answer[2];
+    choice4.textContent = questionBank[questionCount].answer[3];
+
+    choice1.addEventListener("click", userAnswer);
+    choice2.addEventListener("click", userAnswer);
+    choice3.addEventListener("click", userAnswer);
+    choice4.addEventListener("click", userAnswer);
+
 };
 
 //userAnswer handles the choice of the user 
 function userAnswer(e) {
     e.preventDefault();
-    console.log("userAnswer");
-    if (questionBank[questionCount].AnswerKey[0]) {
+    if (questionBank[questionCount].correctAnswer === this.textContent) {
         score++;
         console.log("step1");
         alert("Right Answer1");
@@ -144,8 +163,10 @@ function endGame() {
     var inputTextBox = document.createElement("input");
     var submitBtn = document.createElement("button")
     var cardBody = document.querySelector(".card-body");
-
+    var cardTitle = document.querySelector(".card-title");
     cardText.setAttribute("class", "card-text");
+    cardTitle.textContent = "All done!"
+
 
     inputForm.setAttribute("class", "inputForm")
     inputFormRow.setAttribute("class", "col-7 formRow");
@@ -160,14 +181,16 @@ function endGame() {
 
     cardBody.removeChild(btnGroup);
     cardBody.appendChild(cardText);
-    cardText.textContent = "Your score is " + score + ".  Please enter you initials below:";
+
     cardBody.appendChild(inputForm);
     inputForm.appendChild(inputFormRow);
     inputFormRow.appendChild(inputTextBox);
     inputFormRow.appendChild(submitBtn);
-
-    stopTimer = true;
+    console.log(document);
     score = score + count;
+    stopTimer = true;
+    cardText.textContent = "Your score is " + score + ".  Please enter you initials below:";
+
 
     submitBtn.addEventListener("click", enterHighScores)
 }
@@ -192,12 +215,22 @@ function enterHighScores(e) {
 
 function showHighScores() {
 
-    var initialInput = document.querySelector(".initialInput");
-    var formRow = document.querySelector(".formRow")
+    // var initialInput = document.querySelector(".initialInput");
+    var formRow = document.createElement("form")
     var displayBlock = document.createElement("span");
     var clearBtn = document.createElement("button");
     var goBackBtn = document.createElement("button");
-    var submitBtn = document.querySelector(".submitBtn");
+    // var submitBtn = document.querySelector(".submitBtn");
+    //var cardTitle = document.querySelector(".card-title");
+    // var cardText = document.querySelector(".card-text");
+    var cardBody = document.querySelector(".card-body");
+    var cardReplaceBody = document.createElement("div");
+    var cardTitle = document.createElement("h5");
+    var card = document.querySelector(".card");
+    formRow.setAttribute("class", "formRow");
+    cardReplaceBody.setAttribute("class", "card-body")
+    cardTitle.setAttribute("class", "card-title");
+    cardTitle.textContent = "Highscores"
 
     goBackBtn.setAttribute("class", "btn btn-primary getBackBtn");
 
@@ -209,8 +242,12 @@ function showHighScores() {
     clearBtn.textContent = "Clear HighScore";
     goBackBtn.textContent = "Go Back";
 
-    formRow.removeChild(initialInput);
-    formRow.removeChild(submitBtn);
+    card.removeChild(cardBody);
+    card.appendChild(cardReplaceBody);
+    cardReplaceBody.appendChild(cardTitle);
+    cardReplaceBody.appendChild(formRow)
+    //formRow.removeChild(initialInput);
+    //formRow.removeChild(submitBtn);
     formRow.appendChild(displayBlock);
     formRow.appendChild(goBackBtn);
     formRow.appendChild(clearBtn);
@@ -231,16 +268,27 @@ function clearScore(e) {
 function restartGame(e) {
     e.preventDefault();
 
-    var inputForm = document.querySelector(".inputForm");
+    var formRow = document.querySelector(".formRow");
     var restart = document.createElement("button");
     var cardBody = document.querySelector(".card-body");
+    var cardTitle = document.querySelector(".card-title");
+    var cardText = document.createElement("p");
+    var countdownTimer = document.querySelector(".countdownTimer");
+    cardText.setAttribute("class", "card-text");
+    cardText.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score time by 10 seconds!"
+    cardTitle.textContent = "Coding Quiz Challenge"
+    countdownTimer.textContent = "Time: 75"
+
 
     restart.setAttribute("type", "button");
     restart.setAttribute("class", "btn btn-primary startGame");
     restart.textContent = "Start";
 
-    cardBody.removeChild(inputForm);
+    cardBody.removeChild(formRow);
+    cardBody.appendChild(cardText);
     cardBody.appendChild(restart);
+
+    console.log(document)
 
     //Reset initial variables
     questionCount = 0;
@@ -252,3 +300,4 @@ function restartGame(e) {
 };
 
 startGame.addEventListener("click", startTasks);
+viewHS.addEventListener("click", showHighScores);
