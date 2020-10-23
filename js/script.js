@@ -6,14 +6,6 @@ var countdownTimer = document.querySelector(".countdownTimer");
 var startGame = document.querySelector(".startGame");
 
 //HTML variables
-var cardBody = document.querySelector(".card-body");
-var cardTitle = document.querySelector(".card-title");
-var cardText = document.querySelector(".card-text");
-
-console.log(cardBody);
-console.log(cardTitle);
-console.log(cardText);
-
 var questionCount = 0;
 var count = 75;
 var score = 0;
@@ -41,19 +33,15 @@ var questionBank = [
 
 function startTasks(e) {
     e.preventDefault();
-    console.log("before startTasks operations")
-    // console.log(cardBody);
-    //Traverse the DOM to change format of page
-    // var cardBody = document.querySelector(".card-body");
-    // var cardText = document.querySelector(".card-text");
+
+    var cardBody = document.querySelector(".card-body");
+    var cardText = document.querySelector(".card-text");
+    var startGame = document.querySelector(".startGame");
     var btnGroup = document.createElement("div");
     var btn1 = document.createElement("button");
     var btn2 = document.createElement("button");
     var btn3 = document.createElement("button");
     var btn4 = document.createElement("button");
-    //var cardBody = document.querySelector(".card-body");
-    // var cardTitle = document.querySelector(".card-title");
-    //var cardText = document.querySelector(".card-text");
 
     //Setting attributes for dynamic HTML 
     btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
@@ -70,16 +58,14 @@ function startTasks(e) {
 
     console.log(cardBody);
     console.log(cardText);
-    cardBody.removeChild(document.querySelector(".card-text"));
-    cardBody.removeChild(document.querySelector(".startGame"))
+    cardBody.removeChild(cardText);
+    cardBody.removeChild(startGame);
     cardBody.appendChild(btnGroup);
     btnGroup.appendChild(btn1);
     btnGroup.appendChild(btn2);
     btnGroup.appendChild(btn3);
     btnGroup.appendChild(btn4);
 
-    console.log("startTasks");
-    console.log(cardBody);
     startTimer();
     startQuestions();
 
@@ -115,8 +101,7 @@ function startQuestions() {
     var choice3 = document.querySelector(".choice3");
     var choice4 = document.querySelector(".choice4");
     var choice = document.querySelector(".btn");
-    // console.log(questionCount);
-    // console.log(choice1);
+    var cardTitle = document.querySelector(".card-title");
 
 
     cardTitle.textContent = questionBank[questionCount].Question;
@@ -124,9 +109,6 @@ function startQuestions() {
     choice2.textContent = questionBank[questionCount].Answer[1];
     choice3.textContent = questionBank[questionCount].Answer[2];
     choice4.textContent = questionBank[questionCount].Answer[3];
-
-    console.log("startQuestions")
-    console.log(cardBody)
 
     choice.addEventListener("click", userAnswer);
 };
@@ -158,15 +140,14 @@ function userAnswer(e) {
 function endGame() {
 
     var btnGroup = document.querySelector(".btnGroup");
-    var comment = document.createElement("p");
+    var cardText = document.createElement("p");
     var inputForm = document.createElement("form")
     var inputFormRow = document.createElement("div");
     var inputTextBox = document.createElement("input");
-    var button = document.createElement("button")
+    var submitBtn = document.createElement("button")
+    var cardBody = document.querySelector(".card-body");
 
-    stopTimer = true;
-
-    comment.setAttribute("class", "card-text");
+    cardText.setAttribute("class", "card-text");
 
     inputForm.setAttribute("class", "inputForm")
     inputFormRow.setAttribute("class", "col-7 formRow");
@@ -175,23 +156,23 @@ function endGame() {
     inputTextBox.setAttribute("class", "form-control initialInput");
     inputTextBox.setAttribute("placeholder", "Enter your initials");
 
-    button.setAttribute("type", "button");
-    button.setAttribute("class", "btn btn-primary submitBtn");
-    button.textContent = "Submit";
+    submitBtn.setAttribute("type", "button");
+    submitBtn.setAttribute("class", "btn btn-primary submitBtn");
+    submitBtn.textContent = "Submit";
 
-    score = score + count;
 
     cardBody.removeChild(btnGroup);
-    cardBody.appendChild(comment);
-    comment.textContent = "Your score is " + score + ".  Please enter you initials below:";
+    cardBody.appendChild(cardText);
+    cardText.textContent = "Your score is " + score + ".  Please enter you initials below:";
     cardBody.appendChild(inputForm);
     inputForm.appendChild(inputFormRow);
     inputFormRow.appendChild(inputTextBox);
-    inputFormRow.appendChild(button);
-    console.log("end game")
-    console.log(cardBody)
+    inputFormRow.appendChild(submitBtn);
 
-    document.querySelector(".submitBtn").addEventListener("click", enterHighScores)
+    stopTimer = true;
+    score = score + count;
+
+    submitBtn.addEventListener("click", enterHighScores)
 
 }
 
@@ -215,7 +196,6 @@ function enterHighScores(e) {
 
 function showHighScores() {
 
-
     var initialInput = document.querySelector(".initialInput");
     var formRow = document.querySelector(".formRow")
     var displayBlock = document.createElement("span");
@@ -223,7 +203,6 @@ function showHighScores() {
     var goBackBtn = document.createElement("button");
     var submitBtn = document.querySelector(".submitBtn");
 
-    goBackBtn.removeAttribute("class");
     goBackBtn.setAttribute("class", "btn btn-primary getBackBtn");
 
     displayBlock.setAttribute("class", "d-block p-2 bg-primary text-white displayBlock");
@@ -243,8 +222,6 @@ function showHighScores() {
     formRow.appendChild(clearBtn);
 
     console.log("showHighScores");
-    console.log(cardBody);
-
 
     clearBtn.addEventListener("click", clearScore);
     goBackBtn.addEventListener("click", restartGame);
@@ -256,22 +233,22 @@ function clearScore(e) {
     var displayBlock = document.querySelector(".displayBlock");
     var formRow = document.querySelector(".formRow");
     formRow.removeChild(displayBlock);
-    console.log("clearScore")
-    console.log(cardBody)
 }
 
 function restartGame(e) {
     e.preventDefault();
+
     var inputForm = document.querySelector(".inputForm");
     var restart = document.createElement("button");
+    var cardBody = document.querySelector(".card-body");
+
+
     restart.setAttribute("type", "button");
     restart.setAttribute("class", "btn btn-primary startGame");
-    restart.textContent = "Start"
+    restart.textContent = "Start";
 
     cardBody.removeChild(inputForm);
     cardBody.appendChild(restart);
-    console.log("restartGame")
-    console.log(cardBody);
 
     questionCount = 0;
     count = 75;
@@ -281,7 +258,6 @@ function restartGame(e) {
     restart.addEventListener("click", startTasks);
 };
 
-console.log("start game")
 startGame.addEventListener("click", startTasks);
 
 //Script
