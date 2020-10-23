@@ -56,8 +56,6 @@ function startTasks(e) {
 
     //Remote and append children
 
-    console.log(cardBody);
-    console.log(cardText);
     cardBody.removeChild(cardText);
     cardBody.removeChild(startGame);
     cardBody.appendChild(btnGroup);
@@ -160,7 +158,6 @@ function endGame() {
     submitBtn.setAttribute("class", "btn btn-primary submitBtn");
     submitBtn.textContent = "Submit";
 
-
     cardBody.removeChild(btnGroup);
     cardBody.appendChild(cardText);
     cardText.textContent = "Your score is " + score + ".  Please enter you initials below:";
@@ -173,7 +170,6 @@ function endGame() {
     score = score + count;
 
     submitBtn.addEventListener("click", enterHighScores)
-
 }
 
 function enterHighScores(e) {
@@ -213,15 +209,11 @@ function showHighScores() {
     clearBtn.textContent = "Clear HighScore";
     goBackBtn.textContent = "Go Back";
 
-    // console.log(initialInput);
-    // console.log(formRow);
     formRow.removeChild(initialInput);
     formRow.removeChild(submitBtn);
     formRow.appendChild(displayBlock);
     formRow.appendChild(goBackBtn);
     formRow.appendChild(clearBtn);
-
-    console.log("showHighScores");
 
     clearBtn.addEventListener("click", clearScore);
     goBackBtn.addEventListener("click", restartGame);
@@ -232,6 +224,7 @@ function clearScore(e) {
 
     var displayBlock = document.querySelector(".displayBlock");
     var formRow = document.querySelector(".formRow");
+
     formRow.removeChild(displayBlock);
 }
 
@@ -242,7 +235,6 @@ function restartGame(e) {
     var restart = document.createElement("button");
     var cardBody = document.querySelector(".card-body");
 
-
     restart.setAttribute("type", "button");
     restart.setAttribute("class", "btn btn-primary startGame");
     restart.textContent = "Start";
@@ -250,6 +242,7 @@ function restartGame(e) {
     cardBody.removeChild(inputForm);
     cardBody.appendChild(restart);
 
+    //Reset initial variables
     questionCount = 0;
     count = 75;
     score = 0;
@@ -259,17 +252,3 @@ function restartGame(e) {
 };
 
 startGame.addEventListener("click", startTasks);
-
-//Script
-
-//Stage 1:  Cover page with button that starts the program
-
-
-
-// Once the program starts, the timer starts 
-
-//Stage 2:  Questions and answer program - goes through each of the question and prompt the user to select answers
-// The timer stops either when the user has answered all the questions or when it goes into zero 
-//Stage 3:  Once all the questions are answered or the timer runs out, we prompt the user for initials for high score
-//Stage 4:  If the user makes it to the high score, it is displayed.  Otherwise, a message says the user didn't not get to a highscore
-//There are 2 buttons for this stage, either you start again or you can clear the top scores
