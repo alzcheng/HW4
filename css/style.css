@@ -1,4 +1,4 @@
-/*Stage 1*/
+/*Stage 1 - start quiz screen*/
 
 .card{
     width: 50%; 
@@ -17,7 +17,7 @@
     margin: 0 auto;
 }
 
-/*Stage 2*/
+/*Stage 2 - questions screen */
 
 .card-title-st2{
     text-align: left; 
@@ -28,16 +28,27 @@
     text-align: left;
 }
 
-/*Stage 3*/
+/*Stage 3 - enter high score screen*/
 
 .card-title-st3{
     text-align: center; 
 }
-.submitBtn-st3{
-    margin-left: 5px;
+
+.card-text-st3{
+    text-align: center; 
 }
 
-/*Stage 4*/
+.initialInput-st3{
+    margin-left: auto; 
+}
+
+.submitBtn-st3{
+    margin-left: 5px;
+    margin-right: auto; 
+}
+
+
+/*Stage 4 display high score screen*/
 
 .card-title-st4{
     text-align: center;

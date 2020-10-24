@@ -41,6 +41,34 @@ var questionBank = [
 
 ];
 
+var newUser = {
+    name: "",
+    gameScore: ""
+};
+var scoreBoardClear = [
+    { name: "AAA", gameScore: 0 },
+    { name: "AAA", gameScore: 0 },
+    { name: "AAA", gameScore: 0 },
+    { name: "AAA", gameScore: 0 },
+    { name: "AAA", gameScore: 0 },
+];
+
+var scoreBoard = scoreBoardClear;
+localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
+
+
+// // newUser.name = "Albert"
+// // newUser.value = 23;
+
+// function addItem(scoreBoard, newUser) {
+//     scoreBoard.push(newUser);
+//     scoreBoard.sort(function (a, b) {
+//         return a.value - b.value;
+//     });
+//     scoreBoard.pop();
+//     return scoreBoard;
+// }
+
 
 //Function definitions 
 
@@ -116,20 +144,34 @@ function startTimer() {
     }, 1000)
 }
 
-// function correctAnswer() {
-//     var cardBody = document.querySelector(".card-body");
-//     var displayElement = document.createElement("p");
-//     displayElement.setAttribute("class", "displayElement")
-//     displayElement.textContent = "Right Answer!"
-//     cardBody.appendChild(displayElement);
-//     var display = setInterval(function () {
+//Makes the message right answer appear at the bottom of the screen 
+function correctAnswer() {
 
-//     }, 1000)
-//     cardBody.removeChild(displayElement);
-//     // console.log(document);
-//     console.log(document.querySelector("displayElement"));
-//     // cardBody.removeChild(document.querySelector("displayElement"));
-// }
+    var cardBody = document.querySelector(".card-body");
+    var displayElement = document.createElement("p");
+    displayElement.setAttribute("class", "displayElement");
+    displayElement.textContent = "Right Answer!";
+    cardBody.appendChild(displayElement);
+
+    setTimeout(function () {
+        cardBody.removeChild(displayElement);
+    }, 500);
+}
+
+//Makes the message wrong answer appaer at the bottom of the screen
+function wrongAnswer() {
+
+    var cardBody = document.querySelector(".card-body");
+    var displayElement = document.createElement("p");
+    displayElement.setAttribute("class", "displayElement");
+    displayElement.textContent = "Wrong Answer!";
+    cardBody.appendChild(displayElement);
+
+    setTimeout(function () {
+        cardBody.removeChild(displayElement);
+    }, 500);
+}
+
 //startQuestions fills in the questions and the choices for answers from startTasks
 
 function startQuestions() {
@@ -159,13 +201,12 @@ function startQuestions() {
 //userAnswer handles the choice of the user 
 function userAnswer(e) {
     e.preventDefault();
+
     if (questionBank[questionCount].correctAnswer === this.textContent) {
         score++; //Add 1 to score if it is the right answer
-        console.log("step1");
-        // correctAnswer();
-        //alert("Right Answer");
+        correctAnswer();
     } else {
-        console.log("step2");
+        //console.log("step2");
         if ((count + score) < 10) {
             count = 0;
             score = 0;
@@ -173,7 +214,7 @@ function userAnswer(e) {
         } else {
             count = count - 10;
         }
-        //alert("Wrong Answer");
+        wrongAnswer();
     }
 
     if (questionCount === questionBank.length - 1) {
@@ -209,6 +250,7 @@ function endGame() {
     cardText.setAttribute("class", "card-text card-text-st3");
     inputForm.setAttribute("class", "form-inline inputForm-st3");
     inputTextBox.setAttribute("type", "text");
+    inputTextBox.setAttribute("onkeydown", "return (event.keyCode!=13);");
     inputTextBox.setAttribute("class", "form-control initialInput-st3");
     inputTextBox.setAttribute("placeholder", "Enter your initials");
     submitBtn.setAttribute("type", "button");
@@ -231,8 +273,23 @@ function endGame() {
     stopTimer = true;
     cardText.textContent = "Your score is " + score + ".  Please enter you initials below:";
 
-
+    inputTextBox.addEventListener("submit", enterHighScores)
     submitBtn.addEventListener("click", enterHighScores)
+}
+
+// Adding item to the scoreboard
+function addItem(highScore, newUser) {
+    console.log("in addItem");
+    console.log(highScore);
+    console.log(newUser);
+    highScore.push(newUser);
+    console.log(highScore);
+    highScore.sort(function (a, b) {
+        return b.gameScore - a.gameScore;
+    });
+    console.log(highScore)
+    highScore.pop();
+    return highScore;
 }
 
 function enterHighScores(e) {
@@ -243,12 +300,22 @@ function enterHighScores(e) {
     var currentUser = document.querySelector(".initialInput-st3").value;
     var currentScore = score;
 
+    newUser.name = currentUser;
+    newUser.gameScore = score;
+
+    console.log(newUser);
+
+    scoreBoard = JSON.parse(localStorage.getItem('scoreBoard'));
+    scoreBoard = addItem(scoreBoard, newUser);
+    localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
+    console.log(scoreBoard)
+
     // if (currentScore < lastScore) {
     //     window.localStorage.setItem("user", lastUser);
     //     window.localStorage.setItem("score", lastScore);
     // } else {
-    window.localStorage.setItem("user", currentUser);
-    window.localStorage.setItem("score", currentScore);
+    // window.localStorage.setItem("user", currentUser);
+    // window.localStorage.setItem("score", currentScore);
     // }
     showHighScores()
 }
@@ -265,6 +332,7 @@ function showHighScores() {
     var goBackBtn = document.createElement("button");
     var cardReplaceBody = document.createElement("div");
     var cardTitle = document.createElement("h5");
+    var orderedList = document.createElement("ol");
 
     //Resetting elment attributes for stage
     cardBody.setAttribute("class", "card-body card-body-st4");
@@ -279,10 +347,12 @@ function showHighScores() {
     clearBtn.setAttribute("class", "btn btn-primary clearBtn-st4");
 
     //Setting text content
-    displayBlock.textContent = window.localStorage.getItem("user") + "-" + window.localStorage.getItem("score");
+    //displayBlock.textContent = window.localStorage.getItem("user") + "-" + window.localStorage.getItem("score");
     cardTitle.textContent = "Highscores"
     clearBtn.textContent = "Clear HighScore";
     goBackBtn.textContent = "Go Back";
+
+
 
     //Removing child
     card.removeChild(cardBody);
@@ -293,6 +363,13 @@ function showHighScores() {
     cardReplaceBody.appendChild(displayBlock);
     cardReplaceBody.appendChild(goBackBtn);
     cardReplaceBody.appendChild(clearBtn);
+    displayBlock.appendChild(orderedList);
+
+    for (i = 0; i < scoreBoard.length; i++) {
+        var listItem = document.createElement("li");
+        listItem.textContent = scoreBoard[i].name + " - " + scoreBoard[i].gameScore;
+        orderedList.appendChild(listItem);
+    }
 
     clearBtn.addEventListener("click", clearScore);
     goBackBtn.addEventListener("click", restartGame);
@@ -307,6 +384,11 @@ function clearScore(e) {
 
     //Removing child
     cardBody.removeChild(displayBlock);
+
+    //Clear score board 
+    scoreBoard = scoreBoardClear;
+    localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
+
 }
 
 function restartGame(e) {
