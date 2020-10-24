@@ -49,30 +49,37 @@ var questionBank = [
 function startTasks(e) {
     e.preventDefault();
 
+    //Get elements from document
     var cardBody = document.querySelector(".card-body");
     var cardText = document.querySelector(".card-text");
+    var cardTitle = document.querySelector(".card-title");
     var startGame = document.querySelector(".startGame");
+
+    //Create new elements to be put into document
     var btnGroup = document.createElement("div");
     var btn1 = document.createElement("button");
     var btn2 = document.createElement("button");
     var btn3 = document.createElement("button");
     var btn4 = document.createElement("button");
 
-    //Setting attributes for dynamic HTML 
+    //Setting attributes 
     btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
     btn1.setAttribute("type", "button");
-    btn1.setAttribute("class", "btn btn-primary allBtn choice1");
+    btn1.setAttribute("class", "btn btn-primary btn-stage2 choice1");
     btn2.setAttribute("type", "button");
-    btn2.setAttribute("class", "btn btn-primary allBtn choice2");
+    btn2.setAttribute("class", "btn btn-primary btn-stage2 choice2");
     btn3.setAttribute("type", "button");
-    btn3.setAttribute("class", "btn btn-primary allBtn choice3");
+    btn3.setAttribute("class", "btn btn-primary btn-stage2 choice3");
     btn4.setAttribute("type", "button");
-    btn4.setAttribute("class", "btn btn-primary allBtn choice4");
+    btn4.setAttribute("class", "btn btn-primary btn-stage2 choice4");
+    cardTitle.removeAttribute("class");
+    cardTitle.setAttribute("class", "card-title data-ct-stage2");
 
-    //Remote and append children
-
+    //Remove children 
     cardBody.removeChild(cardText);
     cardBody.removeChild(startGame);
+
+    //Append children
     cardBody.appendChild(btnGroup);
     btnGroup.appendChild(btn1);
     btnGroup.appendChild(btn2);
@@ -84,46 +91,58 @@ function startTasks(e) {
 
 };
 
-
 //startTimer counts down the time from a pre-determiend count.  
 //It will initiate endGame if time runs out.  Otherwise, it will stop if stopTimer = true; 
 function startTimer() {
-    console.log("startTimer")
+
     var timer = setInterval(function () {
         count--
         countdownTimer.textContent = "Timer: " + count;
         if (count === 0) {
-            clearInterval(timer)
             countdownTimer.textContent = "Timer: " + count;
-            //Tallies up the scores
+            clearInterval(timer)
             endGame();
         } else if (stopTimer) {
-            clearInterval(timer)
             countdownTimer.textContent = "Timer: " + count;
+            clearInterval(timer)
             return;
         }
     }, 1000)
 }
 
+// function correctAnswer() {
+//     var cardBody = document.querySelector(".card-body");
+//     var displayElement = document.createElement("p");
+//     displayElement.setAttribute("class", "displayElement")
+//     displayElement.textContent = "Right Answer!"
+//     cardBody.appendChild(displayElement);
+//     var display = setInterval(function () {
+
+//     }, 1000)
+//     cardBody.removeChild(displayElement);
+//     // console.log(document);
+//     console.log(document.querySelector("displayElement"));
+//     // cardBody.removeChild(document.querySelector("displayElement"));
+// }
 //startQuestions fills in the questions and the choices for answers from startTasks
 
 function startQuestions() {
 
+    //Getting elements from the document 
     var choice1 = document.querySelector(".choice1");
     var choice2 = document.querySelector(".choice2");
     var choice3 = document.querySelector(".choice3");
     var choice4 = document.querySelector(".choice4");
-    var choice = document.getElementsByClassName("allBtn");
     var cardTitle = document.querySelector(".card-title");
 
-
-
+    //Setting text content
     cardTitle.textContent = questionBank[questionCount].question;
     choice1.textContent = questionBank[questionCount].answer[0];
     choice2.textContent = questionBank[questionCount].answer[1];
     choice3.textContent = questionBank[questionCount].answer[2];
     choice4.textContent = questionBank[questionCount].answer[3];
 
+    //Set click events to each of the buttons 
     choice1.addEventListener("click", userAnswer);
     choice2.addEventListener("click", userAnswer);
     choice3.addEventListener("click", userAnswer);
@@ -135,16 +154,23 @@ function startQuestions() {
 function userAnswer(e) {
     e.preventDefault();
     if (questionBank[questionCount].correctAnswer === this.textContent) {
-        score++;
+        score++; //Add 1 to score if it is the right answer
         console.log("step1");
-        alert("Right Answer1");
+        // correctAnswer();
+        //alert("Right Answer");
     } else {
         console.log("step2");
-        alert("Wrong Answer1");
-
+        if ((count + score) < 10) {
+            count = 0;
+            score = 0;
+            endGame();
+        } else {
+            count = count - 10;
+        }
+        //alert("Wrong Answer");
     }
 
-    if (questionCount == questionBank.length - 1) {
+    if (questionCount === questionBank.length - 1) {
         console.log("step3");
         endGame();
     } else {
@@ -156,36 +182,38 @@ function userAnswer(e) {
 
 function endGame() {
 
+    //Getting element from document
     var btnGroup = document.querySelector(".btnGroup");
-    var cardText = document.createElement("p");
-    var inputForm = document.createElement("form")
-    var inputFormRow = document.createElement("div");
-    var inputTextBox = document.createElement("input");
-    var submitBtn = document.createElement("button")
     var cardBody = document.querySelector(".card-body");
     var cardTitle = document.querySelector(".card-title");
+
+    //Create new element
+    var cardText = document.createElement("p");
+    var inputForm = document.createElement("form")
+    var inputTextBox = document.createElement("input");
+    var submitBtn = document.createElement("button")
+
+    //Setting element attributes
     cardText.setAttribute("class", "card-text");
-    cardTitle.textContent = "All done!"
-
-
-    inputForm.setAttribute("class", "inputForm")
-    inputFormRow.setAttribute("class", "col-7 formRow");
-
+    inputForm.setAttribute("class", "form-inline inputForm");
     inputTextBox.setAttribute("type", "text");
     inputTextBox.setAttribute("class", "form-control initialInput");
     inputTextBox.setAttribute("placeholder", "Enter your initials");
-
     submitBtn.setAttribute("type", "button");
     submitBtn.setAttribute("class", "btn btn-primary submitBtn");
+
+    //Setting text content
+    cardTitle.textContent = "All done!"
     submitBtn.textContent = "Submit";
 
+    //Removing child
     cardBody.removeChild(btnGroup);
-    cardBody.appendChild(cardText);
 
+    //Appending child
+    cardBody.appendChild(cardText);
     cardBody.appendChild(inputForm);
-    inputForm.appendChild(inputFormRow);
-    inputFormRow.appendChild(inputTextBox);
-    inputFormRow.appendChild(submitBtn);
+    inputForm.appendChild(inputTextBox);
+    inputForm.appendChild(submitBtn);
     console.log(document);
     score = score + count;
     stopTimer = true;
@@ -215,42 +243,40 @@ function enterHighScores(e) {
 
 function showHighScores() {
 
-    // var initialInput = document.querySelector(".initialInput");
-    var formRow = document.createElement("form")
+    //Getting elements from document
+    var cardBody = document.querySelector(".card-body");
+    var card = document.querySelector(".card");
+
+    //Creating new elements
     var displayBlock = document.createElement("span");
     var clearBtn = document.createElement("button");
     var goBackBtn = document.createElement("button");
-    // var submitBtn = document.querySelector(".submitBtn");
-    //var cardTitle = document.querySelector(".card-title");
-    // var cardText = document.querySelector(".card-text");
-    var cardBody = document.querySelector(".card-body");
     var cardReplaceBody = document.createElement("div");
     var cardTitle = document.createElement("h5");
-    var card = document.querySelector(".card");
-    formRow.setAttribute("class", "formRow");
-    cardReplaceBody.setAttribute("class", "card-body")
-    cardTitle.setAttribute("class", "card-title");
-    cardTitle.textContent = "Highscores"
 
+    //Setting element attribute
+    cardReplaceBody.setAttribute("class", "card-body cb-stage4")
+    cardTitle.setAttribute("class", "card-title ct-stage4");
     goBackBtn.setAttribute("class", "btn btn-primary getBackBtn");
-
     displayBlock.setAttribute("class", "d-block p-2 bg-primary text-white displayBlock");
-    displayBlock.textContent = window.localStorage.getItem("user") + "-" + window.localStorage.getItem("score");
     clearBtn.setAttribute("type", "button");
     clearBtn.setAttribute("class", "btn btn-primary clearBtn");
 
+    //Setting text content
+    displayBlock.textContent = window.localStorage.getItem("user") + "-" + window.localStorage.getItem("score");
+    cardTitle.textContent = "Highscores"
     clearBtn.textContent = "Clear HighScore";
     goBackBtn.textContent = "Go Back";
 
+    //Removing child
     card.removeChild(cardBody);
+
+    //Appending child
     card.appendChild(cardReplaceBody);
     cardReplaceBody.appendChild(cardTitle);
-    cardReplaceBody.appendChild(formRow)
-    //formRow.removeChild(initialInput);
-    //formRow.removeChild(submitBtn);
-    formRow.appendChild(displayBlock);
-    formRow.appendChild(goBackBtn);
-    formRow.appendChild(clearBtn);
+    cardReplaceBody.appendChild(displayBlock);
+    cardReplaceBody.appendChild(goBackBtn);
+    cardReplaceBody.appendChild(clearBtn);
 
     clearBtn.addEventListener("click", clearScore);
     goBackBtn.addEventListener("click", restartGame);
@@ -259,32 +285,50 @@ function showHighScores() {
 function clearScore(e) {
     e.preventDefault();
 
+    //Getting element from document
     var displayBlock = document.querySelector(".displayBlock");
-    var formRow = document.querySelector(".formRow");
+    var cardBody = document.querySelector(".card-body");
 
-    formRow.removeChild(displayBlock);
+    //Removing child
+    cardBody.removeChild(displayBlock);
 }
 
 function restartGame(e) {
     e.preventDefault();
 
-    var formRow = document.querySelector(".formRow");
-    var restart = document.createElement("button");
+    //Getting element from document
+    var getBackBtn = document.querySelector(".getBackBtn");
+    var clearBtn = document.querySelector(".clearBtn");
+    var displayBlock = document.querySelector(".displayBlock")
     var cardBody = document.querySelector(".card-body");
     var cardTitle = document.querySelector(".card-title");
-    var cardText = document.createElement("p");
     var countdownTimer = document.querySelector(".countdownTimer");
+
+    //Creating new elements
+    var restart = document.createElement("button");
+    var cardText = document.createElement("p");
+
+    //Setting attributes
     cardText.setAttribute("class", "card-text");
+    restart.setAttribute("type", "button");
+    restart.setAttribute("class", "btn btn-primary startGame");
+
+    //Setting text content
     cardText.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score time by 10 seconds!"
     cardTitle.textContent = "Coding Quiz Challenge"
     countdownTimer.textContent = "Time: 75"
-
-
-    restart.setAttribute("type", "button");
-    restart.setAttribute("class", "btn btn-primary startGame");
     restart.textContent = "Start";
 
-    cardBody.removeChild(formRow);
+    console.log(displayBlock);
+
+    //Removing child
+    if (displayBlock !== null) {
+        cardBody.removeChild(displayBlock);
+    }
+    cardBody.removeChild(getBackBtn);
+    cardBody.removeChild(clearBtn);
+
+    //Appending chile
     cardBody.appendChild(cardText);
     cardBody.appendChild(restart);
 

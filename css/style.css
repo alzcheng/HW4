@@ -1,2 +1,41 @@
+/* Global */
 
+.card{
+    width: 50%; 
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px; 
+}
 
+/*Stage 1*/
+
+.data-ct-stage1{
+    text-align: center;
+}
+
+.data-btn-stage1{
+    display: block;
+    margin: 0 auto;
+}
+
+/*Stage 2*/
+
+.btn-stage2{
+    margin: 5px; 
+    text-align: left;
+}
+
+/*Stage 3*/
+.submitBtn{
+    margin-left: 10px;
+}
+
+/*Stage 4*/
+.cb-stage4{
+    text-align: center;
+}
+
+.ct-stage4{
+    text-align: center;
+}
