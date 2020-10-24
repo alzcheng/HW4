@@ -50,6 +50,7 @@ function startTasks(e) {
     e.preventDefault();
 
     //Get elements from document
+    var card = document.querySelector(".card")
     var cardBody = document.querySelector(".card-body");
     var cardText = document.querySelector(".card-text");
     var cardTitle = document.querySelector(".card-title");
@@ -62,18 +63,23 @@ function startTasks(e) {
     var btn3 = document.createElement("button");
     var btn4 = document.createElement("button");
 
-    //Setting attributes 
-    btnGroup.setAttribute("class", "btn-group-vertical btnGroup");
+    //Resetting attributes for stage
+    card.setAttribute("class", "card card-st2");
+    cardBody.setAttribute("class", "card-body card-body-st2");
+    cardText.setAttribute("class", "card-text card-text-st2");
+    cardTitle.setAttribute("class", "card-title card-title-st2");
+    startGame.setAttribute("class", "startGame startGame-st2")
+
+    //Setting new attributes
+    btnGroup.setAttribute("class", "btn-group-vertical btnGroup-st2");
     btn1.setAttribute("type", "button");
-    btn1.setAttribute("class", "btn btn-primary btn-stage2 choice1");
+    btn1.setAttribute("class", "btn btn-primary btn-st2 choice1");
     btn2.setAttribute("type", "button");
-    btn2.setAttribute("class", "btn btn-primary btn-stage2 choice2");
+    btn2.setAttribute("class", "btn btn-primary btn-st2 choice2");
     btn3.setAttribute("type", "button");
-    btn3.setAttribute("class", "btn btn-primary btn-stage2 choice3");
+    btn3.setAttribute("class", "btn btn-primary btn-st2 choice3");
     btn4.setAttribute("type", "button");
-    btn4.setAttribute("class", "btn btn-primary btn-stage2 choice4");
-    cardTitle.removeAttribute("class");
-    cardTitle.setAttribute("class", "card-title data-ct-stage2");
+    btn4.setAttribute("class", "btn btn-primary btn-st2 choice4");
 
     //Remove children 
     cardBody.removeChild(cardText);
@@ -183,7 +189,8 @@ function userAnswer(e) {
 function endGame() {
 
     //Getting element from document
-    var btnGroup = document.querySelector(".btnGroup");
+    var card = document.querySelector(".card");
+    var btnGroup = document.querySelector(".btnGroup-st2");
     var cardBody = document.querySelector(".card-body");
     var cardTitle = document.querySelector(".card-title");
 
@@ -193,14 +200,19 @@ function endGame() {
     var inputTextBox = document.createElement("input");
     var submitBtn = document.createElement("button")
 
+    //Resetting attributes for stage
+    card.setAttribute("class", "card card-st3");
+    cardBody.setAttribute("class", "card-body card-body-st3");
+    cardTitle.setAttribute("class", "card-title card-title-st3");
+
     //Setting element attributes
-    cardText.setAttribute("class", "card-text");
-    inputForm.setAttribute("class", "form-inline inputForm");
+    cardText.setAttribute("class", "card-text card-text-st3");
+    inputForm.setAttribute("class", "form-inline inputForm-st3");
     inputTextBox.setAttribute("type", "text");
-    inputTextBox.setAttribute("class", "form-control initialInput");
+    inputTextBox.setAttribute("class", "form-control initialInput-st3");
     inputTextBox.setAttribute("placeholder", "Enter your initials");
     submitBtn.setAttribute("type", "button");
-    submitBtn.setAttribute("class", "btn btn-primary submitBtn");
+    submitBtn.setAttribute("class", "btn btn-primary submitBtn-st3");
 
     //Setting text content
     cardTitle.textContent = "All done!"
@@ -228,7 +240,7 @@ function enterHighScores(e) {
     console.log("enterHighScore");
     // var lastUser = window.localStorage.getItem("user");
     //var lastScore = window.localStorage.getItem("score");
-    var currentUser = document.querySelector(".initialInput").value;
+    var currentUser = document.querySelector(".initialInput-st3").value;
     var currentScore = score;
 
     // if (currentScore < lastScore) {
@@ -254,13 +266,17 @@ function showHighScores() {
     var cardReplaceBody = document.createElement("div");
     var cardTitle = document.createElement("h5");
 
+    //Resetting elment attributes for stage
+    cardBody.setAttribute("class", "card-body card-body-st4");
+    card.setAttribute("class", "card card-st4");
+
     //Setting element attribute
-    cardReplaceBody.setAttribute("class", "card-body cb-stage4")
-    cardTitle.setAttribute("class", "card-title ct-stage4");
-    goBackBtn.setAttribute("class", "btn btn-primary getBackBtn");
-    displayBlock.setAttribute("class", "d-block p-2 bg-primary text-white displayBlock");
+    cardReplaceBody.setAttribute("class", "card-body card-body-st4")
+    cardTitle.setAttribute("class", "card-title card-title-st4");
+    goBackBtn.setAttribute("class", "btn btn-primary getBackBtn-st4");
+    displayBlock.setAttribute("class", "d-block p-2 bg-primary text-white displayBlock-st4");
     clearBtn.setAttribute("type", "button");
-    clearBtn.setAttribute("class", "btn btn-primary clearBtn");
+    clearBtn.setAttribute("class", "btn btn-primary clearBtn-st4");
 
     //Setting text content
     displayBlock.textContent = window.localStorage.getItem("user") + "-" + window.localStorage.getItem("score");
@@ -286,7 +302,7 @@ function clearScore(e) {
     e.preventDefault();
 
     //Getting element from document
-    var displayBlock = document.querySelector(".displayBlock");
+    var displayBlock = document.querySelector(".displayBlock-st4");
     var cardBody = document.querySelector(".card-body");
 
     //Removing child
@@ -297,9 +313,10 @@ function restartGame(e) {
     e.preventDefault();
 
     //Getting element from document
-    var getBackBtn = document.querySelector(".getBackBtn");
-    var clearBtn = document.querySelector(".clearBtn");
-    var displayBlock = document.querySelector(".displayBlock")
+    var card = document.querySelector(".card")
+    var getBackBtn = document.querySelector(".getBackBtn-st4");
+    var clearBtn = document.querySelector(".clearBtn-st4");
+    var displayBlock = document.querySelector(".displayBlock-st4")
     var cardBody = document.querySelector(".card-body");
     var cardTitle = document.querySelector(".card-title");
     var countdownTimer = document.querySelector(".countdownTimer");
@@ -308,16 +325,21 @@ function restartGame(e) {
     var restart = document.createElement("button");
     var cardText = document.createElement("p");
 
+    //Resetting attributes for stage
+    card.setAttribute("class", "card card-st1");
+    cardBody.setAttribute("class", "card-body card-body-st1");
+    cardTitle.setAttribute("class", "card-title card-title-st1");
+
     //Setting attributes
-    cardText.setAttribute("class", "card-text");
+    cardText.setAttribute("class", "card-text card-text-st1");
     restart.setAttribute("type", "button");
-    restart.setAttribute("class", "btn btn-primary startGame");
+    restart.setAttribute("class", "btn btn-primary startGame btn-st1");
 
     //Setting text content
     cardText.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score time by 10 seconds!"
     cardTitle.textContent = "Coding Quiz Challenge"
     countdownTimer.textContent = "Time: 75"
-    restart.textContent = "Start";
+    restart.textContent = "Start Quiz";
 
     console.log(displayBlock);
 
