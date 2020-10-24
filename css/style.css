@@ -15,6 +15,8 @@
 .btn-st1{
     display: block;
     margin: 0 auto;
+    background-color: indigo; 
+    border: none;
 }
 
 /*Stage 2 - questions screen */
@@ -26,6 +28,13 @@
 .btn-st2{
     margin: 5px; 
     text-align: left;
+    background-color: indigo; 
+    border: none;
+}
+
+.displayElement-st2{
+    margin-top: 5px;
+    border-top: solid 2px gray;
 }
 
 /*Stage 3 - enter high score screen*/
@@ -45,8 +54,9 @@
 .submitBtn-st3{
     margin-left: 5px;
     margin-right: auto; 
+    background-color: indigo; 
+    border: none;
 }
-
 
 /*Stage 4 display high score screen*/
 
@@ -54,10 +64,21 @@
     text-align: center;
 }
 
-.getBack-st4{
+.getBackBtn-st4{
     margin: 5px; 
+    margin-left: auto; 
+    background-color: indigo; 
+    border: none;
+   
 }
 
 .clearBtn-st4{
     margin:5px; 
+    margin-right: auto;
+    background-color: indigo; 
+    border: none;
+}
+
+.displayBlock-st4{
+    border: solid 5px black;
 }

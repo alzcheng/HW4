@@ -6,7 +6,7 @@ var countdownTimer = document.querySelector(".countdownTimer");
 var startGame = document.querySelector(".startGame");
 var viewHS = document.querySelector(".viewHS");
 
-//HTML variables
+//Define global variables
 var questionCount = 0;
 var count = 75;
 var score = 0;
@@ -54,26 +54,13 @@ var scoreBoardClear = [
 ];
 
 var scoreBoard = scoreBoardClear;
+
+//Initially stores the first scoreBoard
 localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
-
-
-// // newUser.name = "Albert"
-// // newUser.value = 23;
-
-// function addItem(scoreBoard, newUser) {
-//     scoreBoard.push(newUser);
-//     scoreBoard.sort(function (a, b) {
-//         return a.value - b.value;
-//     });
-//     scoreBoard.pop();
-//     return scoreBoard;
-// }
-
 
 //Function definitions 
 
-//startTasks sets up the page for mutliple choice questions and either calls startTimer and startQuestions. 
-
+//Sets up the page for mutliple choice questions and either calls startTimer and startQuestions. 
 function startTasks(e) {
     e.preventDefault();
 
@@ -125,7 +112,7 @@ function startTasks(e) {
 
 };
 
-//startTimer counts down the time from a pre-determiend count.  
+//Counts down the time from a pre-determiend count.  
 //It will initiate endGame if time runs out.  Otherwise, it will stop if stopTimer = true; 
 function startTimer() {
 
@@ -149,10 +136,11 @@ function correctAnswer() {
 
     var cardBody = document.querySelector(".card-body");
     var displayElement = document.createElement("p");
-    displayElement.setAttribute("class", "displayElement");
+    displayElement.setAttribute("class", "displayElement-st2");
     displayElement.textContent = "Right Answer!";
     cardBody.appendChild(displayElement);
 
+    //Displays for 0.5 seconds
     setTimeout(function () {
         cardBody.removeChild(displayElement);
     }, 500);
@@ -163,17 +151,17 @@ function wrongAnswer() {
 
     var cardBody = document.querySelector(".card-body");
     var displayElement = document.createElement("p");
-    displayElement.setAttribute("class", "displayElement");
+    displayElement.setAttribute("class", "displayElement-st2");
     displayElement.textContent = "Wrong Answer!";
     cardBody.appendChild(displayElement);
 
+    //Displays for 0.5 seconds
     setTimeout(function () {
         cardBody.removeChild(displayElement);
     }, 500);
 }
 
-//startQuestions fills in the questions and the choices for answers from startTasks
-
+//Fills in the questions and the choices for answers from startTasks
 function startQuestions() {
 
     //Getting elements from the document 
@@ -198,7 +186,7 @@ function startQuestions() {
 
 };
 
-//userAnswer handles the choice of the user 
+//Handles the choice of the user 
 function userAnswer(e) {
     e.preventDefault();
 
@@ -206,27 +194,28 @@ function userAnswer(e) {
         score++; //Add 1 to score if it is the right answer
         correctAnswer();
     } else {
-        //console.log("step2");
+        //score is less than 10, then just set it to zero
         if ((count + score) < 10) {
             count = 0;
             score = 0;
             endGame();
         } else {
+            //penalize 10 seconds off the clock
             count = count - 10;
         }
         wrongAnswer();
     }
 
+    //Reached the end of the game or go to next page
     if (questionCount === questionBank.length - 1) {
-        console.log("step3");
         endGame();
     } else {
         questionCount = questionCount + 1;
-        console.log("step4")
         startQuestions();
     }
 }
 
+//Handles when the last question is answered and the game ends
 function endGame() {
 
     //Getting element from document
@@ -268,58 +257,45 @@ function endGame() {
     cardBody.appendChild(inputForm);
     inputForm.appendChild(inputTextBox);
     inputForm.appendChild(submitBtn);
-    console.log(document);
+
+    //calculate scores 
     score = score + count;
     stopTimer = true;
+
+    //Show scores
     cardText.textContent = "Your score is " + score + ".  Please enter you initials below:";
 
+    //Click events
     inputTextBox.addEventListener("submit", enterHighScores)
     submitBtn.addEventListener("click", enterHighScores)
 }
 
 // Adding item to the scoreboard
 function addItem(highScore, newUser) {
-    console.log("in addItem");
-    console.log(highScore);
-    console.log(newUser);
     highScore.push(newUser);
-    console.log(highScore);
     highScore.sort(function (a, b) {
         return b.gameScore - a.gameScore;
     });
-    console.log(highScore)
     highScore.pop();
     return highScore;
 }
 
+//Submit and store high scores; 
 function enterHighScores(e) {
     e.preventDefault();
-    console.log("enterHighScore");
-    // var lastUser = window.localStorage.getItem("user");
-    //var lastScore = window.localStorage.getItem("score");
+
     var currentUser = document.querySelector(".initialInput-st3").value;
-    var currentScore = score;
 
     newUser.name = currentUser;
     newUser.gameScore = score;
-
-    console.log(newUser);
-
     scoreBoard = JSON.parse(localStorage.getItem('scoreBoard'));
     scoreBoard = addItem(scoreBoard, newUser);
     localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
-    console.log(scoreBoard)
 
-    // if (currentScore < lastScore) {
-    //     window.localStorage.setItem("user", lastUser);
-    //     window.localStorage.setItem("score", lastScore);
-    // } else {
-    // window.localStorage.setItem("user", currentUser);
-    // window.localStorage.setItem("score", currentScore);
-    // }
     showHighScores()
 }
 
+//Show high scores
 function showHighScores() {
 
     //Getting elements from document
@@ -327,6 +303,7 @@ function showHighScores() {
     var card = document.querySelector(".card");
 
     //Creating new elements
+    var inputForm = document.createElement("form")
     var displayBlock = document.createElement("span");
     var clearBtn = document.createElement("button");
     var goBackBtn = document.createElement("button");
@@ -339,6 +316,7 @@ function showHighScores() {
     card.setAttribute("class", "card card-st4");
 
     //Setting element attribute
+    inputForm.setAttribute("class", "form-inline inputForm-st4");
     cardReplaceBody.setAttribute("class", "card-body card-body-st4")
     cardTitle.setAttribute("class", "card-title card-title-st4");
     goBackBtn.setAttribute("class", "btn btn-primary getBackBtn-st4");
@@ -352,8 +330,6 @@ function showHighScores() {
     clearBtn.textContent = "Clear HighScore";
     goBackBtn.textContent = "Go Back";
 
-
-
     //Removing child
     card.removeChild(cardBody);
 
@@ -361,10 +337,12 @@ function showHighScores() {
     card.appendChild(cardReplaceBody);
     cardReplaceBody.appendChild(cardTitle);
     cardReplaceBody.appendChild(displayBlock);
-    cardReplaceBody.appendChild(goBackBtn);
-    cardReplaceBody.appendChild(clearBtn);
+    cardReplaceBody.appendChild(inputForm);
+    inputForm.appendChild(goBackBtn);
+    inputForm.appendChild(clearBtn);
     displayBlock.appendChild(orderedList);
 
+    //Adding ordered list elements - at this point the scoreBoard is updated from previous functions
     for (i = 0; i < scoreBoard.length; i++) {
         var listItem = document.createElement("li");
         listItem.textContent = scoreBoard[i].name + " - " + scoreBoard[i].gameScore;
@@ -375,6 +353,7 @@ function showHighScores() {
     goBackBtn.addEventListener("click", restartGame);
 }
 
+//Clear high scores
 function clearScore(e) {
     e.preventDefault();
 
@@ -383,25 +362,26 @@ function clearScore(e) {
     var cardBody = document.querySelector(".card-body");
 
     //Removing child
-    cardBody.removeChild(displayBlock);
+    if (displayBlock !== null) {
+        cardBody.removeChild(displayBlock);
+    }
 
-    //Clear score board 
+    //Clear score board and save to local memory
     scoreBoard = scoreBoardClear;
     localStorage.setItem('scoreBoard', JSON.stringify(scoreBoard));
-
 }
 
+//restart the game by putting everything back to the start of the game
 function restartGame(e) {
     e.preventDefault();
 
     //Getting element from document
     var card = document.querySelector(".card")
-    var getBackBtn = document.querySelector(".getBackBtn-st4");
-    var clearBtn = document.querySelector(".clearBtn-st4");
     var displayBlock = document.querySelector(".displayBlock-st4")
     var cardBody = document.querySelector(".card-body");
     var cardTitle = document.querySelector(".card-title");
     var countdownTimer = document.querySelector(".countdownTimer");
+    var inputForm = document.querySelector(".inputForm-st4")
 
     //Creating new elements
     var restart = document.createElement("button");
@@ -423,20 +403,15 @@ function restartGame(e) {
     countdownTimer.textContent = "Time: 75"
     restart.textContent = "Start Quiz";
 
-    console.log(displayBlock);
-
     //Removing child
     if (displayBlock !== null) {
         cardBody.removeChild(displayBlock);
     }
-    cardBody.removeChild(getBackBtn);
-    cardBody.removeChild(clearBtn);
+    cardBody.removeChild(inputForm);
 
-    //Appending chile
+    //Appending child
     cardBody.appendChild(cardText);
     cardBody.appendChild(restart);
-
-    console.log(document)
 
     //Reset initial variables
     questionCount = 0;
@@ -444,8 +419,12 @@ function restartGame(e) {
     score = 0;
     stopTimer = false;
 
+    //Restart game
     restart.addEventListener("click", startTasks);
 };
 
+//Initial start of game
 startGame.addEventListener("click", startTasks);
+
+//Being able to view high score anytime through Navbar
 viewHS.addEventListener("click", showHighScores);
