@@ -1,4 +1,4 @@
-# HW3 JavaScript: Password Generator
+# HW4 Web APIs: Code Quiz
 
 ## The Application
 
