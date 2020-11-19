@@ -33,4 +33,4 @@ The user can enter his or her initial.  If their scores are top 5, their name wi
 1. Code can be better organized.  Can refractor and use JQuery to simplify the code.  Need to think about the organization first in the next homework. 
 
 ## Link to finished product website
-[Link to finished product](https://alzcheng.github.io/HW4/)
+[Link to finished product](https://alzcheng.github.io/codeQuiz/)
