@@ -1,4 +1,4 @@
-# HW4 Web APIs: Code Quiz
+# Code Quiz
 
 ## The Application
 
